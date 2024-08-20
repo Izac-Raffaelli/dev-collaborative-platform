@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Desenvolvimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #4a90e2;
+        }
+
+        textarea {
+            width: 80%;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        h2 {
+            color: #4a90e2;
+            margin-top: 30px;
+        }
+
+        pre {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            width: 80%;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            font-size: 14px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            textarea, pre {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+    <script>
+        async function analyzeCode() {
+            const code = document.getElementById('code').value;
+            const response = await fetch('/api/analyze-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const result = await response.json();
+            document.getElementById('code-errors').textContent = result.errors.join('\n');
+        }
+
+        async function generateDocs() {
+            const code = document.getElementById('code').value;
+            const response = await fetch('/api/generate-docs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const result = await response.json();
+            document.getElementById('documentation').textContent = result.documentation;
+        }
+    </script>
+</head>
+<body>
+    <h1>Plataforma de Desenvolvimento</h1>
+    <textarea id="code" rows="10" cols="50" placeholder="Insira seu código aqui..."></textarea><br>
+    <button onclick="analyzeCode()">Analisar Código</button>
+    <button onclick="generateDocs()">Gerar Documentação</button><br>
+    <h2>Erros Encontrados:</h2>
+    <pre id="code-errors"></pre>
+    <h2>Documentação Gerada:</h2>
+    <pre id="documentation"></pre>
+</body>
+</html>
+
